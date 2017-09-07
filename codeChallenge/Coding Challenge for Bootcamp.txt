@@ -1,0 +1,397 @@
+﻿Coding Challenge
+
+
+All applicants must demonstrate basic coding ability to be considered for the Android Bootcamp.
+
+
+Background
+
+
+You must use Java as your programming language. Solutions created in other languages will not be considered. You may use 3rd party libraries (e. g. Gson, guava, Apache Commons). You may develop your solution to this problem using the tools and development environment of your choice.
+
+
+You must submit a copy of your complete source code along with the output showing your solution to the two provided test inputs. We will not compile or run your code. So, it is not necessary to provide compiled objects, project files or configuration files.
+
+
+Problem
+
+
+Given a cart showing a quantity of product variants, calculate the total cost, including sales tax.
+
+
+Imagine a small store based in Ontario which sells a limited number of products. For every sale made, the merchant must record and collect Sale Tax. In Ontario, a 13% Harmonized Sales Tax  (HST) is commonly collected on most items sold. However, several exemptions and adjustments to the common tax rate is made depending on the product type.
+
+
+Given a set of Products and a list of Tax Rates, it is your job to calculate and display the appropriate amount of tax to be collected by the merchant for each sale. For this task, you will be supplied with a Cart of product variants showing the quantity of items a customer wishes to purchase.
+
+
+Provided data
+
+
+You are provided the following two set of data, provided in JSON format. You must use the information in these tables to complete the solution. It is not required to submit these data sets with your solution.
+
+
+Products
+
+
+[
+ {
+   "id": 1000,
+   "name": "Adult Shoes",
+   "variants": [
+     {
+       "size": "size 6",
+       "price": 39.99,
+       "tax_code": 0
+     },
+     {
+       "size": "size 8",
+       "price": 39.99,
+       "tax_code": 0
+     },
+     {
+       "size": "size 10",
+       "price": 39.99,
+       "tax_code": 0
+     }
+   ]
+ },
+ {
+   "id": 2000,
+   "name": "Child Shoes",
+   "variants": [
+     {
+       "size": "size 1",
+       "price": 19.99,
+       "tax_code": 3
+     },
+     {
+       "size": "size 4",
+       "price": 19.99,
+       "tax_code": 3
+     },
+     {
+       "size": "size 7",
+       "price": 19.99,
+       "tax_code": 0
+     }
+   ]
+ },
+ {
+   "id": 3000,
+   "name": "Eggs",
+   "variants": [
+     {
+       "size": "6",
+       "price": 1.50,
+       "tax_code": 7
+     },
+     {
+       "size": "12",
+       "price": 2.25,
+       "tax_code": 7
+     }
+   ]
+ },
+ {
+   "id": 3100,
+   "name": "Apples",
+   "variants": [
+     {
+       "size": "1",
+       "price": 0.30,
+       "tax_code": 7
+     },
+     {
+       "size": "10",
+       "price": 2.50,
+       "tax_code": 7
+     }
+   ]
+ },
+ {
+   "id": 4000,
+   "name": "Prepared sandwich",
+   "variants": [
+     {
+       "size": "Small",
+       "price": 2.50,
+       "tax_code": 5
+     },
+     {
+       "size": "Large",
+       "price": 4.00,
+       "tax_code": 5
+     }
+   ]
+ },
+ {
+   "id": 5423,
+   "name": "Book",
+   "variants": [
+     {
+       "size": "Assorted",
+       "price": 11.00,
+       "tax_code": 1
+     }
+   ]
+ },
+ {
+   "id": 9999,
+   "name": "Toy",
+   "variants": [
+     {
+       "size": "Various",
+       "price": 3.99,
+       "tax_code": 0
+     }
+   ]
+ }
+]
+	
+
+
+
+Tax Rates
+
+
+[
+ {
+   "code": 0,
+   "name": "HST",
+   "rate": 0.13
+ },
+ {
+   "code": 1,
+   "name": "HST - Books",
+   "rate": 0.05
+ },
+ {
+   "code": 3,
+   "name": "HST - Children's Clothing",
+   "rate": 0.05
+ },
+ {
+   "code": 4,
+   "name": "HST - Children's footwear",
+   "rate": 0.05
+ },
+ {
+   "code": 5,
+   "name": "HST - Prepared food < $4",
+   "rate": 0.05
+ },
+ {
+   "code": 7,
+   "name": "EXEMPT - Food",
+   "rate": 0
+ }
+]
+	
+
+
+
+
+
+Example input & solutions
+
+
+Example 1
+
+
+[
+ {
+   "product": 3000,
+   "variant": 1,
+   "quantity": 1
+ },
+ {
+   "product": 3100,
+   "variant": 1,
+   "quantity": 1
+ },
+ {
+   "product": 4000,
+   "variant": 1,
+   "quantity": 1
+ }
+]
+	
+
+Expected output for example 1
+
+
+==========================================================
+                Coding Challenge Store
+==========================================================
+
+
+Quantity  Description                Tax Code  Amount
+  1       Eggs - 12                     7        2.25
+  1       Apples - 10                   7        2.50
+  1       Prepared sandwich - Large     5        4.00
+
+
+                    SUBTOTAL:       $8.75               
+
+
+  5-HST - Prepared food < $4            5%       0.20
+  7-EXEMPT - Food                       0%       0.00
+
+
+                    TOTAL:          $8.95
+
+
+	
+
+
+
+Example 2
+
+
+[
+ {
+   "product": 2000,
+   "variant": 2,
+   "quantity": 3
+ },
+ {
+   "product": 5423,
+   "variant": 0,
+   "quantity": 2
+ },
+ {
+   "product": 1000,
+   "variant": 0,
+   "quantity": 4
+ }
+]
+	
+
+Expected output for example 2
+
+
+==========================================================
+                Coding Challenge Store
+==========================================================
+
+
+Quantity  Description                Tax Code  Amount
+  3       Child Shoes - size 7          0       59.97
+  2       Book - Assorted               1       22.00
+  4       Adult Shoes - size 6          0      159.96
+
+
+                    SUBTOTAL:       $241.93             
+
+
+  0-HST                                 13%     28.59
+  1-HST - Books                          5%      1.10
+
+
+                    TOTAL:          $271.62
+
+
+	
+
+
+
+Test input
+
+
+You are required to submit the output for the following two sets of sample input.
+
+
+Test input 1
+
+
+[
+ {
+   "product": 1000,
+   "variant": 0,
+   "quantity": 1
+ },
+ {
+   "product": 2000,
+   "variant": 1,
+   "quantity": 10
+ },
+ {
+   "product": 3000,
+   "variant": 0,
+   "quantity": 6
+ },
+ {
+   "product": 4000,
+   "variant": 0,
+   "quantity": 1
+ }
+]
+	
+
+Test input 2
+
+
+[
+ {
+   "product": 3000,
+   "variant": 0,
+   "quantity": 4
+ },
+ {
+   "product": 4000,
+   "variant": 0,
+   "quantity": 1
+ },
+ {
+   "product": 2000,
+   "variant": 1,
+   "quantity": 8
+ },
+ {
+   "product": 5423,
+   "variant": 0,
+   "quantity": 9
+ },
+ {
+   "product": 1000,
+   "variant": 1,
+   "quantity": 1
+ },
+ {
+   "product": 9999,
+   "variant": 0,
+   "quantity": 3
+ }
+]
+	
+
+
+
+
+
+Definitions
+
+
+Product
+
+
+A product is an article or substance that is manufactured or refined for sale. A product contains one or more variants.
+
+
+Variant
+
+
+A product variant is a specific item that is grouped with related variants that together form a product. Variants usually vary from each other in one or more properties. For example, a medium-sized, green shirt is one product variant of the Shirt product. A large-sized, blue shirt would be another variant of the Shirt product. Each product variant is based on the same product definition.
+
+
+Cart
+
+
+A cart is an abstraction mean to represent a virtual shopping cart: a set of product variants and the quantity of which a customer wishes to purchase.
+
+
+JSON
+
+
+JSON, or JavaScript Object Notation, is a minimal, readable format for structuring data. It is used primarily to transmit data between a server and web application. The two primary parts that make up JSON are keys and values. Together they make a key/value pair.

@@ -1,0 +1,22 @@
+[
+ {
+   "product": 1000,
+   "variant": 0,
+   "quantity": 1
+ },
+ {
+   "product": 2000,
+   "variant": 1,
+   "quantity": 10
+ },
+ {
+   "product": 3000,
+   "variant": 0,
+   "quantity": 6
+ },
+ {
+   "product": 4000,
+   "variant": 0,
+   "quantity": 1
+ }
+]
