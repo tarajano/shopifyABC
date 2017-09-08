@@ -3,8 +3,10 @@ package shopping;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
- 
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,38 +14,60 @@ import org.json.simple.parser.JSONParser;
 
 public class JSONInputParser {
 	
-	private JSONParser parserJSON;
+	public JSONInputParser() {}
 	
-	public JSONInputParser() {
-		parserJSON = new JSONParser();
-	}
 	
-	// Reads a JSON array file into an List<Item> 
-	public void loadWishList(String pathToJSON) {
+	// Reads a JSON array file into an List<WishListItem> 
+	public List<ItemTaxRate> loadTaxRates(String pathToJSON) {
 		
-		Integer productId;
-		Integer variant;
-		Integer quantity;
+		List<ItemTaxRate> returnTaxesRatesList = new ArrayList<ItemTaxRate>(); 
 		
 		try {
-			
 			String jsonString = fileToString(pathToJSON);
 			
 			JSONParser jsonParser = new JSONParser();
 			JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
-			
+
 			for (int i = 0; i < jsonArray.size(); i++) {
-			    JSONObject jsonObjetc = (JSONObject) jsonArray.get(i);
-			    //System.out.println(jsonObjetc);
-//			    (Integer) jsonObjetc.get("productId");
-//			    (Integer) jsonObjetc.get("quantity");
-//			    (Integer) jsonObjetc.get("variant");
+				JSONObject jsonObjetc = (JSONObject) jsonArray.get(i);				 
+				Integer code = Integer.valueOf( jsonObjetc.get("code").toString() );
+				String name = jsonObjetc.get("name").toString();
+				Float rate = Float.valueOf( jsonObjetc.get("rate").toString() );
+				returnTaxesRatesList.add( new ItemTaxRate(code, name, rate) );
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		return returnTaxesRatesList;
+	}	
+	
+	
+	// Reads a JSON array file into an List<WishListItem> 
+	public List<WishListItem> loadWishList(String pathToJSON) {
+		
+		List<WishListItem> returnWishList = new ArrayList<WishListItem>(); 
+		
+		try {
+			String jsonString = fileToString(pathToJSON);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
+
+			for (int i = 0; i < jsonArray.size(); i++) {
+				JSONObject jsonObjetc = (JSONObject) jsonArray.get(i);				 
+				Integer id = Integer.valueOf( jsonObjetc.get("product").toString() );
+				Integer quantity = Integer.valueOf( jsonObjetc.get("quantity").toString() );
+				Integer variant = Integer.valueOf( jsonObjetc.get("variant").toString() );
+			    returnWishList.add( new WishListItem(id, variant, quantity) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnWishList;
 	}
 	
 	// Concatenates a file content to a String.
