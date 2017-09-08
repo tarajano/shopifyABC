@@ -1,5 +1,7 @@
 package shopping;
 
+import java.util.List;
+
 /*
  * Author: Manuel Alonso Tarajano (tarajano@gmail.com)
  */
@@ -11,13 +13,27 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		String pathToFile = null;
 		
-		String pathToWishListFile = "/Users/tarajano/eclipse-workspace/shopifyABC/data/inputEx1.json";
+		// Preparing parser object
+		JSONInputParser jsonParser = new JSONInputParser();
+
+		// Loading Wish List
+		pathToFile = "./data/inputEx1.json";
+		List<WishListItem> wishList = jsonParser.loadWishList( pathToFile );
+
+		// Loading Tax Rates
+		pathToFile = "./data/taxrates.json";
+		List<ItemTaxRate> taxRates = jsonParser.loadTaxRates(pathToFile);
 		
-		System.out.println("here we are");
-		JSONInputParser jp = new JSONInputParser();
-		jp.loadWishList( pathToWishListFile );
+		// Loading Products
+		pathToFile = "./data/products.json";		
+		List<Product> productsList = jsonParser.loadProducts(pathToFile);
+		
+
+		for( Product e : productsList) {
+			System.out.println(e.toString());
+		}
 		
 	}
 

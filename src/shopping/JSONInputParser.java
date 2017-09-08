@@ -16,8 +16,57 @@ public class JSONInputParser {
 	
 	public JSONInputParser() {}
 	
+
+	// Reads a JSON array file into an List<ItemTaxRate> 
+	public List<Product> loadProducts(String pathToJSON) {
+		
+		List<Product> returnProductsList = new ArrayList<Product>(); 
+		
+		try {
+			String jsonString = fileToString(pathToJSON);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
+
+			for (int i = 0; i < jsonArray.size(); i++) {
+				JSONObject jsonOuterObjetc = (JSONObject) jsonArray.get(i);
+				String name = jsonOuterObjetc.get("name").toString();
+				Integer productId = Integer.valueOf( jsonOuterObjetc.get("id").toString() );
+				// Fetching the variants
+				JSONArray variantsArray = (JSONArray) jsonOuterObjetc.get("variants");
+				List<ProductVariant> variantsList = loadProductVariants(variantsArray);
+				returnProductsList.add( new Product(productId, name, variantsList) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnProductsList;
+	}
 	
-	// Reads a JSON array file into an List<WishListItem> 
+	// Reads a JSON array into an List<ProductVariant>
+	private List<ProductVariant> loadProductVariants ( JSONArray variantsArray ) {
+		List<ProductVariant> returnVariants  = new ArrayList<ProductVariant>();
+
+		try {
+			for (int i = 0; i < variantsArray.size(); i++) {
+				JSONObject jsonVariantObject = (JSONObject) variantsArray.get(i);
+				String size = jsonVariantObject.get("size").toString();
+				Float price = Float.valueOf( jsonVariantObject.get("price").toString() );
+				Integer code = Integer.valueOf( jsonVariantObject.get("tax_code").toString() );
+				returnVariants.add( new ProductVariant(size, price, code) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return returnVariants;
+	} 
+	
+	
+	// Reads a JSON array file into an List<ItemTaxRate> 
 	public List<ItemTaxRate> loadTaxRates(String pathToJSON) {
 		
 		List<ItemTaxRate> returnTaxesRatesList = new ArrayList<ItemTaxRate>(); 

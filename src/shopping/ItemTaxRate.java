@@ -28,7 +28,7 @@ public class ItemTaxRate {
 	// toString()
 	public String toString() {
 		String returnString;
-		returnString =	"productId:" + this.taxCode + ", " + 
+		returnString =	"taxCode:" + this.taxCode + ", " + 
 				 		"name:" + this.name + ", " +
 				 		"rate:" + this.rate;
 		return returnString;
