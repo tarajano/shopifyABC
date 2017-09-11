@@ -42,17 +42,18 @@ public class ShoppingCart {
 			Integer stockId = stockProduct.getProductId();
 			if( stockId.equals(wishProductId) ) {
 				List<ProductVariant> variantsList = stockProduct.getVariantsList();
-				if ( wishVariant >= 0 & (variantsList.size() - 1) <= wishVariant ) {
+				if ( wishVariant >= 0 & wishVariant <= (variantsList.size() - 1) ) {
 					return variantsList.get(wishVariant);
+				} else {
+					return null;
 				}
 			}
 		}
+		System.out.printf("product %d NOT in stock\n", wishProductId);
 		return null;
 	}
 	
 	public void loadShoppingCart() {
-		
-		//System.out.println("loadShoppingCart()");
 		
 		for(WishListItem wishItem : wishesList) {
 			

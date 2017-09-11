@@ -19,7 +19,7 @@ public class Main {
 		JSONInputParser jsonParser = new JSONInputParser();
 
 		// Loading Wish List
-		pathToFile = "./data/inputEx2.json";
+		pathToFile = "./data/inputEx1.json";
 		List<WishListItem> wishList = jsonParser.loadWishList( pathToFile );
 
 		// Loading Tax Rates
@@ -28,28 +28,21 @@ public class Main {
 		
 		// Loading Products
 		pathToFile = "./data/products.json";		
-		List<Product> productsList = jsonParser.loadProducts(pathToFile);
+		List<Product> productsList = jsonParser.loadProducts(pathToFile);	
+		
+		ShoppingCart shoppingCart = new ShoppingCart(wishList,productsList,taxRates);
+		shoppingCart.loadShoppingCart();
 		
 		
-		//
-		// TODO Commit first
-		//
-		
-		
-		
-		
-		
-//		ShoppingCart shoppingCart = new ShoppingCart(wishList,productsList,taxRates);
-//		shoppingCart.loadShoppingCart();
-//		System.out.println(shoppingCart.toString());
-//		System.out.println("done up to here!");
+		System.out.println(shoppingCart.toString());
+		System.out.println("done up to here!");
 
-		for( WishListItem e : wishList) {
-			System.out.println(e.toString());
-		}
+//		for( WishListItem e : wishList) {
+//			System.out.println("wishlist: " + e.toString());
+//		}
 //		
 //		for( Product e : productsList) {
-//			System.out.println(e.toString(1));
+//			System.out.println("product: " + e.toString(1));
 //		}
 		
 	}
