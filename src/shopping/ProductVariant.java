@@ -27,11 +27,7 @@ public class ProductVariant {
 	
 	// toString()
 	public String toString() {
-		String returnString;
-		returnString =	"taxCode:" + this.taxCode + ", " + 
-				 		"size:" + this.size + ", " +
-				 		"price:" + this.price;
-		return returnString;
+		return String.format("size:%s, price:%.2f, taxCode:%d", size, price, taxCode);
 	}
 
 }

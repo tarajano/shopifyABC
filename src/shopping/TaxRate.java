@@ -1,12 +1,14 @@
 package shopping;
 
-public class ItemTaxRate {
+public class TaxRate {
 	
 	private Integer taxCode;
 	private String name;
 	private Float rate;
 	
-	public ItemTaxRate(Integer code, String name, Float rate) {
+	// TODO sort on taxCode 
+	
+	public TaxRate(Integer code, String name, Float rate) {
 		this.taxCode = code;
 		this.name = name;
 		this.rate = rate;
@@ -27,11 +29,7 @@ public class ItemTaxRate {
 	
 	// toString()
 	public String toString() {
-		String returnString;
-		returnString =	"taxCode:" + this.taxCode + ", " + 
-				 		"name:" + this.name + ", " +
-				 		"rate:" + this.rate;
-		return returnString;
+		return String.format("taxCode:%d, name:%s, rate:%.2f", taxCode, name, rate);
 	}
 
 }

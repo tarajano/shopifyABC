@@ -27,11 +27,7 @@ public class WishListItem {
 	
 	// toString()
 	public String toString() {
-		String returnString;
-		returnString =	"productId:" + this.productId + ", " + 
-				 		"variant:" + this.variant + ", " +
-				 		"quantity:" + this.quantity;
-		return returnString;
+		return String.format("product:%d, variant:%d, rate:%d", productId, variant, quantity);
 	}
 
 }

@@ -8,6 +8,8 @@ public class Product {
 	private String name;
 	List<ProductVariant> variantsList;
 	
+	// TODO sort on productId
+	
 	public Product(Integer code, String name, List<ProductVariant> pvList) {
 		this.productId = code;
 		this.name = name;
@@ -27,13 +29,24 @@ public class Product {
 		return variantsList;
 	}
 	
-	// toString()
-	public String toString() {
-		String returnString;
-		returnString =	"productId:" + this.productId + ", " + 
-				 		"name:" + this.name + ", " +
-				 		"variants:" + this.variantsList.toString();
+	// Helpers
+	private String getVariantsAsString() {
+		String returnString = "";
+		for (ProductVariant variant: variantsList) {
+			returnString = returnString + variant.toString(); 
+		}
 		return returnString;
 	}
+	
+	// toString()
+	public String toString() {
+		return String.format("product:%d, name:%s",productId, name);
+	}
+	
+	public String toString(Integer i) {
+		// Use this method in case you want to print the variants from product.toString() 
+		return String.format("productId:%d, name:%s, variants:%s",productId, name, getVariantsAsString() );
+	}
+	
 
 }

@@ -17,7 +17,7 @@ public class JSONInputParser {
 	public JSONInputParser() {}
 	
 
-	// Reads a JSON array file into an List<ItemTaxRate> 
+	// Reads a JSON array file into an List<TaxRate> 
 	public List<Product> loadProducts(String pathToJSON) {
 		
 		List<Product> returnProductsList = new ArrayList<Product>(); 
@@ -66,10 +66,10 @@ public class JSONInputParser {
 	} 
 	
 	
-	// Reads a JSON array file into an List<ItemTaxRate> 
-	public List<ItemTaxRate> loadTaxRates(String pathToJSON) {
+	// Reads a JSON array file into an List<TaxRate> 
+	public List<TaxRate> loadTaxRates(String pathToJSON) {
 		
-		List<ItemTaxRate> returnTaxesRatesList = new ArrayList<ItemTaxRate>(); 
+		List<TaxRate> returnTaxesRatesList = new ArrayList<TaxRate>(); 
 		
 		try {
 			String jsonString = fileToString(pathToJSON);
@@ -82,7 +82,7 @@ public class JSONInputParser {
 				Integer code = Integer.valueOf( jsonObjetc.get("code").toString() );
 				String name = jsonObjetc.get("name").toString();
 				Float rate = Float.valueOf( jsonObjetc.get("rate").toString() );
-				returnTaxesRatesList.add( new ItemTaxRate(code, name, rate) );
+				returnTaxesRatesList.add( new TaxRate(code, name, rate) );
 			}
 
 		} catch (Exception e) {
