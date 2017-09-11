@@ -6,8 +6,7 @@ public class TaxRate {
 	private String name;
 	private Float rate;
 	
-	// TODO sort on taxCode 
-	
+	// TODO consider sorting TaxRate list to improve efficiency while searching.
 	public TaxRate(Integer code, String name, Float rate) {
 		this.taxCode = code;
 		this.name = name;

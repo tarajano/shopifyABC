@@ -8,8 +8,7 @@ public class Product {
 	private String name;
 	List<ProductVariant> variantsList;
 	
-	// TODO sort on productId
-	
+	// TODO consider sorting Product list to improve efficiency while searching. 	
 	public Product(Integer code, String name, List<ProductVariant> pvList) {
 		this.productId = code;
 		this.name = name;

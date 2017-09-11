@@ -1,0 +1,53 @@
+
+Please note:
+That for the last two columns (TaxCode and Amount) I corrected the alingments for readability. 
+I trully did not figure it out how to achieve the nice alignement in the examples. :)
+
+
+Results for inputTest1
+
+==========================================================
+		Coding Challenge Store
+==========================================================
+Quantity	Description	           Tax Code	    Amount
+  1		Adult Shoes - size 6 	     0    	    39.99
+ 10		Child Shoes - size 4 	     3 	        199.90
+  6		Eggs - 6 	                 7 	        9.00
+  1		Prepared sandwich - Small 	 5 	        2.50
+
+		SUBTOTAL: $251.39
+
+0-HST		                         13%	    5.20
+3-HST - Children's Clothing		      5%       	9.99
+5-HST - Prepared food < $4		      5%    	0.13
+7-EXEMPT - Food		                  0%	    0.00
+
+
+		TOTAL: $266.71
+        
+
+
+
+
+Results for inputTest2
+==========================================================
+		Coding Challenge Store
+==========================================================
+Quantity	Description	           Tax Code	    Amount
+  4		Eggs - 6 	                 7        	 6.00
+  1		Prepared sandwich - Small 	 5        	 2.50
+  8		Child Shoes - size 4 	     3        	 159.92
+  9		Book - Assorted 	         1        	 99.00
+  1		Adult Shoes - size 8 	     0        	 39.99
+  3		Toy - Various 	             0        	 11.97
+
+		SUBTOTAL: $319.38
+
+0-HST		                         13%       	 6.75
+1-HST - Books                   	  5%         4.95
+3-HST - Children's Clothing		      5%         8.00
+5-HST - Prepared food < $4		      5%         0.13
+7-EXEMPT - Food		                  0%         0.00
+
+
+		TOTAL: $339.21

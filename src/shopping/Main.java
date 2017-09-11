@@ -9,18 +9,24 @@ import java.util.List;
 public class Main {
 
 	public Main() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		String pathToFile = null;
 		
+		// General description. 
+		// 	The program uses several classes to organize and modularize the data. These are:
+		// 		WishListIte: items to be purchased.
+		//		Product: items from the store.
+		//  	ProductVariant: variants for each product (will be assigned as a List to a Product object).
+		//  	TaxRate: The different tax rates to be applied to purchased items. 
+		//  	CartItem: compiles the WishListItems that where found among Products and ProductVariant
+		//  	ShoppingCart: composed of CartItems. Has methods to compute the bill and print it out.
+		
+		// GitHub: https://github.com/tarajano/shopifyABC
+		
 		// Preparing parser object
 		JSONInputParser jsonParser = new JSONInputParser();
-
-		// Loading Wish List
-		pathToFile = "./data/inputEx1.json";
-		List<WishListItem> wishList = jsonParser.loadWishList( pathToFile );
 
 		// Loading Tax Rates
 		pathToFile = "./data/taxrates.json";
@@ -28,23 +34,14 @@ public class Main {
 		
 		// Loading Products
 		pathToFile = "./data/products.json";		
-		List<Product> productsList = jsonParser.loadProducts(pathToFile);	
+		List<Product> productsList = jsonParser.loadProducts(pathToFile);
+		
+		// Loading Wish List
+		pathToFile = "./data/inputTest2.json";
+		List<WishListItem> wishList = jsonParser.loadWishList( pathToFile );
 		
 		ShoppingCart shoppingCart = new ShoppingCart(wishList,productsList,taxRates);
-		shoppingCart.loadShoppingCart();
-		
-		
-		System.out.println(shoppingCart.toString());
-		System.out.println("done up to here!");
-
-//		for( WishListItem e : wishList) {
-//			System.out.println("wishlist: " + e.toString());
-//		}
-//		
-//		for( Product e : productsList) {
-//			System.out.println("product: " + e.toString(1));
-//		}
-		
+		shoppingCart.printBill();
 	}
 
 }

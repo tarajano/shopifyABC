@@ -4,6 +4,23 @@ import java.util.List;
 
 public class CartItem {
 	
+	// Getters
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public Product getProductObject() {
+		return productObject;
+	}
+
+	public TaxRate getTaxRateObject() {
+		return taxRateObject;
+	}
+
+	public ProductVariant getVariantObject() {
+		return variantObject;
+	}
+
 	private Integer quantity;
 	private Product productObject; 
 	private TaxRate taxRateObject;
