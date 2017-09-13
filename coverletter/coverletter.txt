@@ -1,0 +1,20 @@
+
+Dear Julia and Dan,
+
+I want to start by thanking you and your teams for the tremendous effort put into the organization of the Android Boot Camp ('Shopify ABC', as I like to call it). I am amazed of meeting a company that devotes the time, efforts and resources to actually bring such a wonderful project to life. Good job!
+
+
+Why Shopify ABC?
+When I started to think about this, I and realized that most of the answers that came were related to the huge relevance of Android in today's mobile world. Android leads the global market share, Android devices are relatively cheap putting the OS in advantage in markets of developing countries, some of them with huge populations. Android is open source and hardware independent, so anyone can customize it at will (especially mobile devices makers). Last but not least, Android is naturally integrated with Google's products. Me living a life without Google? Ummm. Clearly, a good product on the Play Store could positively impact millions of users across borders and cultures, and that is my answer to "Why Shopify ABC?" To help people. Maybe, my road to create a really great app could to start at Shopify.
+
+Why Shopify?
+Honestly, I did not know much about the company, so answering this question required a bit of research. Almost every page I opened contained wonders about Shopify, and that matched with the vives I sensed during the Info session (open, relaxed, no secrets). Several awards and hundreds of reviews on glassdoor.ca support this. I know CEOs that totally hate Glassdoor. It does not come cheap getting good scores there. Obviously Shopify  works hard to keep and improve a healthy (and rarely seen) culture of professional growth, education, health and diversity. The list of best countries to live in is full of societies that had focused on those topics. It's simply a recipe for success. In hand with all that, in Canada you are pioneers and leaders on web, e-commerce and information technology (and surely some other things I am not yet aware of) and I can not think of a better environment to learn new skills than by collaborating with gurus who like to dedicate part of their time to teach others. Simply said, a unique opportunity.
+
+Why me?
+Okay, this is the tough one. I do not excel at talking about myself and rather explain you who I am than boring you with a "Pick Me!" pitch. I think I have (maybe unconsciously) committed to be a life-long learner. Almost always following programming, technologies and similar courses on Coursera and I am now on my second week at Algonquin College for Computer Programmer. Balancing that with a job and a family, it is going to be interesting to say the least :) I try to keep an active life style - weather and family duties allowing - and this summer I decided to bike the 10Kms from home to work, reaching +450Kms in about two months. I enjoy changes and challenges both professional and personal and lucky as I am I have had the opportunity to change countries and professions twice. I am a good listener and very open and easy going too. I am quite persistent and very rarely quit on things. At "Shopify ABC" I want to get started with an app to interact with OC Transpo's Text-based buses schedule service.
+
+Once again I thank you for the opportunity. The code challenge was definitely a nice exercise.
+
+Sincerely
+
+Manuel Alonso

@@ -1,0 +1,593 @@
+
+GitHub: https://github.com/tarajano/shopifyABC
+
+
+==> CartItem.java <==
+package shopping;
+
+import java.util.List;
+
+public class CartItem {
+	
+	// Getters
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public Product getProductObject() {
+		return productObject;
+	}
+
+	public TaxRate getTaxRateObject() {
+		return taxRateObject;
+	}
+
+	public ProductVariant getVariantObject() {
+		return variantObject;
+	}
+
+	private Integer quantity;
+	private Product productObject; 
+	private TaxRate taxRateObject;
+	private ProductVariant variantObject;
+	
+	public CartItem(List<Object> list) {
+		quantity = (Integer) list.get(0);
+		productObject = (Product) list.get(1);
+		variantObject = (ProductVariant) list.get(2);
+		taxRateObject = (TaxRate) list.get(3);
+	}
+	
+	// toString()
+	public String toString() {
+		return String.format(	"> quantity:%d || product:%s || variant:%s || taxrate:%s",
+								quantity, productObject.toString(), variantObject.toString(), taxRateObject.toString());
+	}
+}
+
+==> JSONInputParser.java <==
+package shopping;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+
+public class JSONInputParser {
+	
+	public JSONInputParser() {}
+	
+
+	// Reads a JSON array file into an List<TaxRate> 
+	public List<Product> loadProducts(String pathToJSON) {
+		
+		List<Product> returnProductsList = new ArrayList<Product>(); 
+		
+		try {
+			String jsonString = fileToString(pathToJSON);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
+
+			for (int i = 0; i < jsonArray.size(); i++) {
+				JSONObject jsonOuterObjetc = (JSONObject) jsonArray.get(i);
+				String name = jsonOuterObjetc.get("name").toString();
+				Integer productId = Integer.valueOf( jsonOuterObjetc.get("id").toString() );
+				// Fetching the variants
+				JSONArray variantsArray = (JSONArray) jsonOuterObjetc.get("variants");
+				List<ProductVariant> variantsList = loadProductVariants(variantsArray);
+				returnProductsList.add( new Product(productId, name, variantsList) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnProductsList;
+	}
+	
+	// Reads a JSON array into an List<ProductVariant>
+	private List<ProductVariant> loadProductVariants ( JSONArray variantsArray ) {
+		List<ProductVariant> returnVariants  = new ArrayList<ProductVariant>();
+
+		try {
+			for (int i = 0; i < variantsArray.size(); i++) {
+				JSONObject jsonVariantObject = (JSONObject) variantsArray.get(i);
+				String size = jsonVariantObject.get("size").toString();
+				Float price = Float.valueOf( jsonVariantObject.get("price").toString() );
+				Integer code = Integer.valueOf( jsonVariantObject.get("tax_code").toString() );
+				returnVariants.add( new ProductVariant(size, price, code) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return returnVariants;
+	} 
+	
+	
+	// Reads a JSON array file into an List<TaxRate> 
+	public List<TaxRate> loadTaxRates(String pathToJSON) {
+		
+		List<TaxRate> returnTaxesRatesList = new ArrayList<TaxRate>(); 
+		
+		try {
+			String jsonString = fileToString(pathToJSON);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
+
+			for (int i = 0; i < jsonArray.size(); i++) {
+				JSONObject jsonObjetc = (JSONObject) jsonArray.get(i);				 
+				Integer code = Integer.valueOf( jsonObjetc.get("code").toString() );
+				String name = jsonObjetc.get("name").toString();
+				Float rate = Float.valueOf( jsonObjetc.get("rate").toString() );
+				returnTaxesRatesList.add( new TaxRate(code, name, rate) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnTaxesRatesList;
+	}	
+	
+	
+	// Reads a JSON array file into an List<WishListItem> 
+	public List<WishListItem> loadWishList(String pathToJSON) {
+		
+		List<WishListItem> returnWishList = new ArrayList<WishListItem>(); 
+		
+		try {
+			String jsonString = fileToString(pathToJSON);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
+
+			for (int i = 0; i < jsonArray.size(); i++) {
+				JSONObject jsonObjetc = (JSONObject) jsonArray.get(i);				 
+				Integer id = Integer.valueOf( jsonObjetc.get("product").toString() );
+				Integer quantity = Integer.valueOf( jsonObjetc.get("quantity").toString() );
+				Integer variant = Integer.valueOf( jsonObjetc.get("variant").toString() );
+			    returnWishList.add( new WishListItem(id, variant, quantity) );
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return returnWishList;
+	}
+	
+	// Concatenates a file content to a String.
+	private String fileToString(String pathToFile) throws IOException {
+		String fileContent = "";
+		try (BufferedReader br = new BufferedReader(new FileReader(pathToFile))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		    	fileContent = fileContent + " " + line;
+		    }
+		}
+		return fileContent;
+	}
+
+}
+
+==> Main.java <==
+package shopping;
+
+import java.util.List;
+
+/*
+ * Author: Manuel Alonso Tarajano (tarajano@gmail.com)
+ */
+
+public class Main {
+
+	public Main() {
+	}
+
+	public static void main(String[] args) {
+		String pathToFile = null;
+		
+		// General description. 
+		// 	The program uses several classes to organize and modularize the data. These are:
+		// 		WishListIte: items to be purchased.
+		//		Product: items from the store.
+		//  	ProductVariant: variants for each product (will be assigned as a List to a Product object).
+		//  	TaxRate: The different tax rates to be applied to purchased items. 
+		//  	CartItem: compiles the WishListItems that where found among Products and ProductVariant
+		//  	ShoppingCart: composed of CartItems. Has methods to compute the bill and print it out.
+		
+		// GitHub: https://github.com/tarajano/shopifyABC
+		
+		// Preparing parser object
+		JSONInputParser jsonParser = new JSONInputParser();
+
+		// Loading Tax Rates
+		pathToFile = "./data/taxrates.json";
+		List<TaxRate> taxRates = jsonParser.loadTaxRates(pathToFile);
+		
+		// Loading Products
+		pathToFile = "./data/products.json";		
+		List<Product> productsList = jsonParser.loadProducts(pathToFile);
+		
+		// Loading Wish List
+		pathToFile = "./data/inputTest2.json";
+		List<WishListItem> wishList = jsonParser.loadWishList( pathToFile );
+		
+		ShoppingCart shoppingCart = new ShoppingCart(wishList,productsList,taxRates);
+		shoppingCart.printBill();
+	}
+
+}
+
+==> Product.java <==
+package shopping;
+
+import java.util.List;
+
+public class Product {
+
+	private Integer productId;
+	private String name;
+	List<ProductVariant> variantsList;
+	
+	// TODO consider sorting Product list to improve efficiency while searching. 	
+	public Product(Integer code, String name, List<ProductVariant> pvList) {
+		this.productId = code;
+		this.name = name;
+		this.variantsList = pvList;
+	}
+	
+	// Getters	
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public List<ProductVariant> getVariantsList() {
+		return variantsList;
+	}
+	
+	// Helpers
+	private String getVariantsAsString() {
+		String returnString = "";
+		for (ProductVariant variant: variantsList) {
+			returnString = returnString + variant.toString(); 
+		}
+		return returnString;
+	}
+	
+	// toString()
+	public String toString() {
+		return String.format("product:%d, name:%s",productId, name);
+	}
+	
+	public String toString(Integer i) {
+		// Use this method in case you want to print the variants from product.toString() 
+		return String.format("productId:%d, name:%s, variants:%s",productId, name, getVariantsAsString() );
+	}
+	
+
+}
+
+==> ProductVariant.java <==
+package shopping;
+
+public class ProductVariant {
+
+	private String size;
+	private Float price;
+	private Integer taxCode;
+	
+	public ProductVariant(String size, Float price, Integer code) {
+		this.size = size;
+		this.price = price;
+		this.taxCode = code;
+	}
+	
+	// Getters
+	public String getSize() {
+		return this.size;
+	}
+
+	public Float getPrice() {
+		return this.price;
+	}
+
+	public Integer getTaxCode() {
+		return this.taxCode;
+	}	
+	
+	// toString()
+	public String toString() {
+		return String.format("size:%s, price:%.2f, taxCode:%d", size, price, taxCode);
+	}
+
+}
+
+==> ShoppingCart.java <==
+package shopping;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class ShoppingCart {
+	
+	private List<TaxRate> taxRatesList;
+	private List<Product> productsList;
+	private List<WishListItem> wishesList;
+	private List<String> billItemsList = new ArrayList<String>();
+	private List<CartItem> cartItemsList = new ArrayList<CartItem>();
+	
+	private HashMap<Integer,Float> amountByTaxCode = new HashMap<Integer,Float>();
+	
+	Float billTotal = 0f;
+	Float billSubTotal = 0f;
+	
+	public ShoppingCart(List<WishListItem> wishes, List<Product> products, List<TaxRate> taxes) {
+		wishesList = wishes;
+		taxRatesList = taxes;
+		productsList = products;
+	}
+	
+	// Helpers
+	public void printBill() {
+		
+		String billLine;
+		
+		// Loading shopping cart from shopping/wish list
+		loadShoppingCart();
+		// Computing the bill
+		computeBill();
+		
+		// Printing bill
+		printHeader();
+		// Print before taxes
+		for(CartItem cartItem: cartItemsList) {
+			
+			Integer itemQuantity = cartItem.getQuantity();
+			String itemName = cartItem.getProductObject().getName();
+			Float itemPrice = cartItem.getVariantObject().getPrice();
+			Float itemTaxRate = cartItem.getTaxRateObject().getRate();
+			String itemVariant = cartItem.getVariantObject().getSize();
+			Integer itemTaxCode = cartItem.getTaxRateObject().getTaxCode();			
+			Float itemAmount = itemQuantity * itemPrice;
+			
+			billLine = String.format("%3d\t\t%s - %s \t %d \t %.2f",
+											itemQuantity, itemName, itemVariant, itemTaxCode, itemAmount);
+			System.out.println(billLine);
+			
+		}
+		
+		// Subtotal
+		billLine = String.format("\n\t\tSUBTOTAL: $%.2f\n", billSubTotal);
+		System.out.println(billLine);
+		
+		// After taxes
+		printAmountByTaxCode();
+		
+		// Total
+		billLine = String.format("\n\n\t\tTOTAL: $%.2f\n", billTotal);
+		System.out.println(billLine);
+		
+	}
+
+	private void printHeader() {
+		System.out.println("==========================================================");
+		System.out.println("\t\tCoding Challenge Store");
+		System.out.println("==========================================================");
+		System.out.println(String.join("\t", "Quantity", "Description", "       Tax Code", "    Amount"));
+	}
+	
+	private void printAmountByTaxCode() {
+		String billLine;
+		
+		for( Integer code : amountByTaxCode.keySet() ) {
+			TaxRate taxRateItem = getTaxRateItemByCode(code);
+		
+			if (taxRateItem != null) {
+				Float itemTaxRate =  taxRateItem.getRate();
+				String itemTaxName = taxRateItem.getName();
+				billLine = String.format("%d-%s\t\t%.0f%%\t%.2f", code, itemTaxName, (itemTaxRate * 100), amountByTaxCode.get(code) );
+				System.out.println(billLine);
+			} else {
+				System.out.println("printAmountByTaxCode() taxCode not found.");
+			}
+			
+		}
+		
+	} 
+	
+	private TaxRate getTaxRateItemByCode(Integer code) {
+		for (TaxRate taxRateItem : taxRatesList) {
+			if (taxRateItem.getTaxCode().equals(code)) {
+				return taxRateItem;
+			}
+		}
+		return null;
+	}
+
+	private void computeBill() {
+		
+		for(CartItem cartItem: cartItemsList) {
+			Integer itemQuantity = cartItem.getQuantity();
+			Float itemPrice = cartItem.getVariantObject().getPrice();
+			Float itemTaxRate = cartItem.getTaxRateObject().getRate();
+			Integer itemTaxCode = cartItem.getTaxRateObject().getTaxCode();
+			
+			Float itemAmount = itemQuantity * itemPrice;
+			Float itemTaxableAmount = itemQuantity * itemPrice * itemTaxRate;
+			
+			billSubTotal += itemAmount;
+			billTotal += itemAmount + itemTaxableAmount;
+			recordAmountByTaxCode(itemTaxCode,itemTaxableAmount);
+		}
+					
+	}
+	
+	private void recordAmountByTaxCode(Integer code, Float amount) {
+		if ( amountByTaxCode.containsKey(code) ) {
+			amountByTaxCode.put(code, amountByTaxCode.get(code) + amount); 
+		} else {
+			amountByTaxCode.put(code, amount);
+		}
+	}
+	
+	private TaxRate getTaxRateObject(Integer targetTaxCode) {
+		for (TaxRate taxRateObject : taxRatesList) {
+			Integer currentTaxCode = taxRateObject.getTaxCode();
+			if( currentTaxCode.equals(targetTaxCode) ) {
+				return taxRateObject;
+			}
+		}
+		return null;
+	}
+	
+	private Product getProductObject(Integer targetId) {	
+		for (Product product : productsList) {
+			Integer currentId = product.getProductId();
+			if( currentId.equals(targetId) ) {
+				return product;
+			}
+		}
+		return null;
+	}
+	
+	private ProductVariant getProductVariantObject(Integer wishProductId, Integer wishVariant) {	
+		for (Product stockProduct : productsList) {
+			Integer stockId = stockProduct.getProductId();
+			if( stockId.equals(wishProductId) ) {
+				List<ProductVariant> variantsList = stockProduct.getVariantsList();
+				if ( wishVariant >= 0 & wishVariant <= (variantsList.size() - 1) ) {
+					return variantsList.get(wishVariant);
+				} else {
+					return null;
+				}
+			}
+		}
+		System.out.printf("product %d NOT in stock\n", wishProductId);
+		return null;
+	}
+	
+	private void loadShoppingCart() {
+		
+		for(WishListItem wishItem : wishesList) {
+			
+			List<Object> quantProdVarTaxList = new ArrayList<Object>();
+			Integer wishProductId = wishItem.getProductId();
+			Integer wishVariant = wishItem.getVariant();
+			Integer wishQuantity = wishItem.getQuantity();
+			
+			// Testing if wished Product and Variant exist ('in stock').
+			ProductVariant variantObj = getProductVariantObject(wishProductId, wishVariant);
+			if ( variantObj != null ) {
+				// new CartItem(quantity, ProductObj, ProductVariantObj, ItemTaxRateObj);
+				Product productObj = getProductObject(wishProductId);
+				TaxRate taxRateObj = getTaxRateObject(variantObj.getTaxCode());
+				// Keep quantProdVarTaxList.add in the order: quantity, product, variant, tax rate.
+				quantProdVarTaxList.add(wishQuantity);
+				quantProdVarTaxList.add(productObj);
+				quantProdVarTaxList.add(variantObj);
+				quantProdVarTaxList.add(taxRateObj);
+				cartItemsList.add( new CartItem(quantProdVarTaxList) );
+			}
+			
+		}
+		
+	}
+	
+	// toString
+	public String toString() {
+		String returnString = "Cart: \n";
+		for ( CartItem cartItem : cartItemsList) {
+			returnString = returnString + "\t" + cartItem.toString() + "\n";
+		}
+		return returnString;
+	}
+	
+}
+
+==> TaxRate.java <==
+package shopping;
+
+public class TaxRate {
+	
+	private Integer taxCode;
+	private String name;
+	private Float rate;
+	
+	// TODO consider sorting TaxRate list to improve efficiency while searching.
+	public TaxRate(Integer code, String name, Float rate) {
+		this.taxCode = code;
+		this.name = name;
+		this.rate = rate;
+	}
+	
+	// Getters
+	public Integer getTaxCode() {
+		return taxCode;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Float getRate() {
+		return rate;
+	}
+	
+	// toString()
+	public String toString() {
+		return String.format("taxCode:%d, name:%s, rate:%.2f", taxCode, name, rate);
+	}
+
+}
+
+==> WishListItem.java <==
+package shopping;
+
+public class WishListItem {
+
+	private Integer productId;
+	private Integer variant;
+	private Integer quantity;
+	
+	public WishListItem(Integer id, Integer var, Integer quant) {
+		this.productId = id;
+		this.variant = var;
+		this.quantity = quant;
+	}
+	
+	// Getters
+	public Integer getProductId() {
+		return this.productId;
+	}
+
+	public Integer getVariant() {
+		return this.variant;
+	}
+
+	public Integer getQuantity() {
+		return this.quantity;
+	}
+	
+	// toString()
+	public String toString() {
+		return String.format("product:%d, variant:%d, rate:%d", productId, variant, quantity);
+	}
+
+}

@@ -1,8 +1,9 @@
 
-Please note:
-That for the last two columns (TaxCode and Amount) I corrected the alingments for readability. 
-I trully did not figure it out how to achieve the nice alignement in the examples. :)
+Please note my apologies :-)
+For the last two columns (TaxCode and Amount) I truly did not figure it out how to
+achieve the nice alignment in the examples. :)
 
+GitHub: https://github.com/tarajano/shopifyABC
 
 Results for inputTest1
 
